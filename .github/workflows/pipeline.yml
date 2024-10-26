@@ -7,26 +7,22 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+  build_test:
+    runs-on: ubuntu-latest   
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Checkout the code
+      uses: actions/checkout@v4
+    - name: Use Node.js 18
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 18
         cache: 'npm'
     - name: Install playwright
       run: npx playwright install
     - run: npm ci
     - run: npm run build --if-present
+    - name: Run the app
+      run: npm run start
     - name: Run unit tests
       run: npm run test:unit
     - name: Run UI tests
