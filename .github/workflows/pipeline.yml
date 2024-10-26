@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build_and_test:
+  build-unit-test:
     runs-on: ubuntu-latest   
     steps:
     - name: Checkout the code
@@ -20,12 +20,26 @@ jobs:
     - name: Install npm dependancies
       run: npm install
     - name: Run unit tests
-      run: npm run test:unit
+      run: npm run test:unit    
+    - name: Display softuni username
+      run: echo 'wirert'   
+  
+  execute-ui-tests:
+    needs: build-unit-test
+    runs-on: ubuntu-latest   
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v4
+    - name: Use Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Install npm dependancies
+      run: npm install   
     - name: Install playwright
       run: npx playwright install
     - name: Run the app
-      run: npm run start &
-    - name: Display softuni username
-      run: echo 'wirert'
+      run: npm run start &   
     - name: Run UI tests
       run: npm run test:ui
