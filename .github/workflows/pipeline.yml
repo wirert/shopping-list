@@ -17,13 +17,15 @@ jobs:
       with:
         node-version: 18
         cache: 'npm'
+    - name: Install npm dependancies
+      run: npm install
     - name: Install playwright
       run: npx playwright install
-    - run: npm ci
-    - run: npm run build --if-present
-    - name: Run the app
-      run: npm run start &
     - name: Run unit tests
       run: npm run test:unit
+    - name: Run the app
+      run: npm run start &
+    - name: Display softuni username
+      run: echo 'wirert'
     - name: Run UI tests
       run: npm run test:ui
